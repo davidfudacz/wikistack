@@ -10,7 +10,7 @@ const models = require('./models');
 
 const pg = require('pg');
 
-models.db.sync({force: true})
+models.db.sync()
 .then(function () {
     console.log('All tables created!');
     app.listen(3000, function () {

@@ -20,7 +20,6 @@ const Page = db.define('page', {
   tags: {
     type: Sequelize.ARRAY(Sequelize.TEXT),
   },
-  tagString: {type: Sequelize.STRING},
 
 },
 {
@@ -34,9 +33,9 @@ const Page = db.define('page', {
         // Generates random 5 letter string
         page.urlTitle = Math.random().toString(36).substring(2, 7);
       }
-      var TagList = page.tagString.trim().split(',');
+      // var TagList = page.tagString.trim().split(',');
 
-      page.tags = TagList;
+      // page.tags = TagList;
     }
   },
   getterMethods: {
@@ -59,6 +58,22 @@ const Page = db.define('page', {
     }
   }
 });
+
+Page.findByTag = function (str) {
+  let list = str.split(' ');
+
+  Page.findAll({
+    // $overlap matches a set of possibilities
+    where : {
+        tags: {
+            $overlap: list
+        }
+    }    
+})
+.then(function (result) {
+  return result;
+});
+};
 
 const User = db.define('user', {
   name: {

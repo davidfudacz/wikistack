@@ -3,10 +3,10 @@
 {% block content %}
   <h3>Pages</h3>
   <hr>
-  <form method="POST" action="/wiki/search">
-    <label for="authorName" class="col-sm-2 control-label">Author Name</label>
+  <form method="GET" action="/wiki/search">
+    <label for="searchTerm" class="col-sm-2 control-label">Search</label>
     <div class="col-sm-10">
-      <input name="authorName" type="text" class="form-control"/>
+      <input name="searchTerm" type="text" class="form-control"/>
     </div>
 </form>
 

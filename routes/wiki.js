@@ -8,6 +8,24 @@ router.get('/', function(req, res, next) {
   res.redirect('/');
 });
 
+router.get('/search', function(req, res, next) {
+  let searchTerm = req.query.searchTerm;
+  let lists = searchTerm.split(' ');
+    Page.findAll({
+      // $overlap matches a set of possibilities
+      where : {
+          tags: {
+              $overlap: lists,
+          }
+      }    
+  })
+  .then(function (result) {
+    res.render('search', {
+      pages: result,
+    })
+  })
+});
+
 
 router.post('/', function(req, res, next) {
   User.findOrCreate({
@@ -23,9 +41,11 @@ router.post('/', function(req, res, next) {
     var page = Page.build({
       title: req.body.title,
       content: req.body.pageContent,
-      tagString: req.body.pageTags,
+      tags: req.body.pageTags.split(','),
     });
-  
+
+    // page.tagInput(req.body.pageTags);
+
     return page.save().then(function (page) {
       return page.setAuthor(user);
     });
@@ -38,6 +58,35 @@ router.post('/', function(req, res, next) {
 
 
 });
+
+router.get('/:wikiUrl/similar', function(req, res) {
+  let wikiUrl = req.params.wikiUrl;
+  Page.findOne({
+    where: {
+      urlTitle: wikiUrl,
+    },
+  })
+  .then(function (result) {
+    let similarTags = result.tags
+    
+    Page.findAll({
+      // $overlap matches a set of possibilities
+      where : {
+          tags: {
+              $overlap: similarTags,
+          }
+      }    
+  })
+  .then(function (result) {
+    res.render('index', {
+      pages: result,
+    })
+  })
+})
+
+
+});
+
 
 router.get('/add', function(req, res) {
   res.render('addpage');
