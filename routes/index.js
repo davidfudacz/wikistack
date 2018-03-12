@@ -18,6 +18,10 @@ router.get('/',function (req,res,next) {
     .catch(next);
 })
 
+router.get('/search', function(req, res, next) {
+	res.render('search');
+})
+
 
 module.exports = router;
 

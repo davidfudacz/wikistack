@@ -14,7 +14,13 @@ const Page = db.define('page', {
     type: Sequelize.TEXT,
     allowNull: false,
   },
-  status: Sequelize.ENUM('open','closed'),
+  status: {
+    type: Sequelize.ENUM('open','closed'),
+  },
+  tags: {
+    type: Sequelize.ARRAY(Sequelize.TEXT),
+  },
+  tagString: {type: Sequelize.STRING},
 
 },
 {
@@ -28,16 +34,29 @@ const Page = db.define('page', {
         // Generates random 5 letter string
         page.urlTitle = Math.random().toString(36).substring(2, 7);
       }
+      var TagList = page.tagString.trim().split(',');
 
+      page.tags = TagList;
     }
   },
   getterMethods: {
     route() {
       return '/wiki/'+this.urlTitle;
+    },
+    tagOutput() {
+      return this.tags.join(',');
     }
   },
   setterMethods: {
-    
+    tagInput(inputString) {
+      this.tags = tagInput.trim().split(',');
+      for (var K = 0; K < this.tags.length; K++) {
+        this.tags[K].trim();
+        if (!tags[K]) {
+          // tags.remove(K);
+        }
+      }
+    }
   }
 });
 

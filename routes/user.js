@@ -13,9 +13,21 @@ router.get('/', function (req,res,next) {
 
 
 router.get('/:userId', function (req,res,next) {
-  User.findById(req.params.userId)
-  Page.find({where:{id:req.params.userId}})
-    .then(users => res.render('users',{users:users}))
+  const userPromise = User.findById(req.params.userId);
+  const pagesPromise = Page.findAll({
+    where:{
+      authorId: req.params.userId
+    }
+  });
+  Promise.all([
+    userPromise,
+    pagesPromise
+  ])
+    .then(function(values) {
+        const user = values[0];
+        const pages = values[1];
+        res.render('user', {user:user, pages:pages});
+    }) 
     .catch(next);
 })
 
