@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
 const app = express();
-const routes = require('./routes');
+const routes = require('./routes/index');
 const models = require('./models');
 
 
@@ -36,3 +36,4 @@ app.use(express.static(__dirname + '/public'))
 
 app.use('/', routes);
 
+console.log("Line 39");
