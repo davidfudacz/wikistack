@@ -2,18 +2,22 @@ const wikiRouter = require('./wiki');
 const userRouter = require('./user');
 const express = require('express');
 const router = express.Router();
+const models = require('../models');
+const Page = models.Page; 
+const User = models.User; 
 
 router.use('/wiki', wikiRouter);
-router.use('/user', userRouter);
+router.use('/users', userRouter);
 
-console.log("line 9 routes/index");
+
+
 
 router.get('/',function (req,res,next) {
-	console.log("line 12 routes/index");
-  	res.render('index', {title:'Wikistack'});
+  Page.findAll()
+    .then(pages => res.render('index',{pages:pages}))
+    .catch(next);
 })
 
-console.log("line 13 routes/index");
 
 module.exports = router;
 

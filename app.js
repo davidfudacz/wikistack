@@ -19,6 +19,10 @@ models.db.sync({force: true})
 })
 .catch(console.error.bind(console));
 
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 
 

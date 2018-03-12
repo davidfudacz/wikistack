@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+label {
+  margin-top:10px;
+}
+
+.col-sm-10 {
+  margin-top:10px;
+}
