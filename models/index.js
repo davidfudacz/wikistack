@@ -16,6 +16,13 @@ const Page = db.define('page', {
   },
   status: Sequelize.ENUM('open','closed'),
 
+},
+{
+  getterMethods: {
+    route() {
+      return '/wiki/'+this.urlTitle;
+    }
+  }
 });
 
 const User = db.define('user', {
